@@ -1,9 +1,9 @@
 <div class="container px-5 px-sm-0">
- <%= flash[:notice] %>
+
  <div class="row">
 <%= render 'books/side', books: @books, users: @users %>
 <!-- User's Books -->
-<div class="col-md-9">
+<div class="col-md-8 offset-md-1">
   <h2>Books</h2>
   <table class="table table-hover table-inverse">
     <thead>

@@ -1,7 +1,7 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
   before_action :is_matching_login_user, only: [:new, :edit, :update, :destroy]
-
+ 
   def new
     @book = Book.new
   end
@@ -12,7 +12,7 @@ class BooksController < ApplicationController
     @uer = current_user
     if @book.save
       flash[:notice] = "You have created book successfully."
-      redirect_to user_path(current_user)
+      redirect_to book_path(@book)
     else
       @books = Book.all
       @users = User.all
@@ -30,12 +30,11 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
-    @user = current_user
+    @user = @book.user
     @books = Book.all 
   end
 
   def edit
-    is_matching_login_user
     @book = Book.find(params[:id])
   end
 
@@ -64,9 +63,8 @@ class BooksController < ApplicationController
 
   def is_matching_login_user
     @book = Book.find(params[:id])
-    unless @book.user == current_user
+    @user = @book.user_id
       flash[:alert] = "You are not authorized to perform this action."
-      redirect_to books_path
-    end
+      redirect_to (books_path)  unless @book.user_id == current_user.id
   end
 end
